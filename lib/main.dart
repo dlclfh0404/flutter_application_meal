@@ -46,17 +46,23 @@ class _MainPageState extends State<MainPage> {
     var meals = await neisApi.getMeal(fromDate: fromDate, toDate: toDate);
 
     setState(() {
-      mealList = ListView.separated(
-          itemBuilder: (context, index) {
-            return ListTile(
-                title: Text(meals[index]['MLSV_YMD']),
-                subtitle: Text(meals[index]['DDISH_NM']
-                    .toString()
-                    .replaceAll('<br/>', '\n')));
-            //데이터를 가지고 와서 여러 작업을 함  그 후 return 위젯
-          },
-          separatorBuilder: (context, index) => const Divider(), //구분자 나눠주는 모습
-          itemCount: meals.length);
+      if (meals.isEmpty) {
+        mealList = const Center(
+          child: Text('결과가 없습니다.'),
+        );
+      } else {
+        mealList = ListView.separated(
+            itemBuilder: (context, index) {
+              return ListTile(
+                  title: Text(meals[index]['MLSV_YMD']),
+                  subtitle: Text(meals[index]['DDISH_NM']
+                      .toString()
+                      .replaceAll('<br/>', '\n')));
+              //데이터를 가지고 와서 여러 작업을 함  그 후 return 위젯
+            },
+            separatorBuilder: (context, index) => const Divider(), //구분자 나눠주는 모습
+            itemCount: meals.length);
+      }
     });
   }
 
